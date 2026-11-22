@@ -1,0 +1,176 @@
+{
+  "entities": {
+    "CatalogMovie": {
+      "title": "CatalogMovie",
+      "description": "Filme ou série disponível no catálogo global do Salgueiro Streaming Angola",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "originalTitle": { "type": "string" },
+        "type": { "type": "string" },
+        "thumbnailUrl": { "type": "string" },
+        "bannerUrl": { "type": "string" },
+        "videoUrl": { "type": "string" },
+        "synopsis": { "type": "string" },
+        "rating": { "type": "string" },
+        "imdbScore": { "type": "number" },
+        "year": { "type": "number" },
+        "duration": { "type": "string" },
+        "genres": { "type": "array" },
+        "quality": { "type": "string" },
+        "audio": { "type": "array" },
+        "subtitles": { "type": "array" },
+        "generatedSubtitles": { "type": "array" },
+        "updatedAt": { "type": "string" },
+        "updatedBy": { "type": "string" }
+      },
+      "required": ["id", "title", "videoUrl"]
+    },
+    "DeletedItem": {
+      "title": "DeletedItem",
+      "description": "Item removido do catálogo pelo administrador",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "deletedAt": { "type": "string" },
+        "deletedBy": { "type": "string" }
+      },
+      "required": ["id"]
+    },
+    "RecycledItem": {
+      "title": "RecycledItem",
+      "description": "Ficheiro, configuração, filme, canal ou addon excluído que pode ser recuperado pelo administrador na Reciclagem",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "originalId": { "type": "string" },
+        "type": { "type": "string" },
+        "title": { "type": "string" },
+        "subtitle": { "type": "string" },
+        "thumbnailUrl": { "type": "string" },
+        "category": { "type": "string" },
+        "data": { "type": "object" },
+        "deletedAt": { "type": "string" },
+        "deletedBy": { "type": "string" }
+      },
+      "required": ["id", "type", "title"]
+    },
+    "IptvConfig": {
+      "title": "IptvConfig",
+      "description": "Configuração global de listas e canais IPTV",
+      "type": "object",
+      "properties": {
+        "iptvUrls": { "type": "array" },
+        "uploadedFiles": { "type": "array" },
+        "updatedAt": { "type": "string" },
+        "updatedBy": { "type": "string" }
+      },
+      "required": ["iptvUrls"]
+    },
+    "UserAccountSubscription": {
+      "title": "UserAccountSubscription",
+      "description": "Dados da conta, estado de ativação e pagamento mensal do utilizador",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "name": { "type": "string" },
+        "role": { "type": "string" },
+        "accountActive": { "type": "boolean" },
+        "planName": { "type": "string" },
+        "monthlyPrice": { "type": "string" },
+        "paymentDate": { "type": "string" },
+        "expirationDate": { "type": "string" },
+        "paymentStatus": { "type": "string" },
+        "paymentMethod": { "type": "string" },
+        "preferredTheme": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["email", "paymentDate", "expirationDate"]
+    },
+    "UserDeviceList": {
+      "title": "UserDeviceList",
+      "description": "Dispositivos associados à conta de utilizador e estado ativo/desativado",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "devices": { "type": "array" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["email", "devices"]
+    },
+    "MediaDomainConfig": {
+      "title": "MediaDomainConfig",
+      "description": "Configuração global da plataforma (domínio de streaming, identidade visual, canais removidos e addons)",
+      "type": "object",
+      "properties": {
+        "customDomain": { "type": "string" },
+        "displayLabel": { "type": "string" },
+        "streamingEnabled": { "type": "boolean" },
+        "appTitle": { "type": "string" },
+        "heroImage": { "type": "string" },
+        "blacklistedChannelIds": { "type": "array" },
+        "channelLogos": { "type": "object" },
+        "movieArtworks": { "type": "object" },
+        "installedAddons": { "type": "array" },
+        "updatedAt": { "type": "string" },
+        "updatedBy": { "type": "string" }
+      }
+    },
+    "OnlinePresence": {
+      "title": "OnlinePresence",
+      "description": "Presença em tempo real de utilizadores e visitantes com local e província",
+      "type": "object",
+      "properties": {
+        "sessionId": { "type": "string" },
+        "email": { "type": "string" },
+        "userName": { "type": "string" },
+        "role": { "type": "string" },
+        "isGuest": { "type": "boolean" },
+        "deviceName": { "type": "string" },
+        "city": { "type": "string" },
+        "province": { "type": "string" },
+        "country": { "type": "string" },
+        "currentView": { "type": "string" },
+        "lastSeenMs": { "type": "number" },
+        "startedAt": { "type": "string" }
+      },
+      "required": ["sessionId", "province", "lastSeenMs"]
+    }
+  },
+  "firestore": {
+    "/catalog/{movieId}": {
+      "schema": "CatalogMovie",
+      "description": "Filmes e séries geridos pelo administrador visíveis para todos os utilizadores"
+    },
+    "/deleted_content/{movieId}": {
+      "schema": "DeletedItem",
+      "description": "Registo de itens eliminados do catálogo"
+    },
+    "/recycle_bin/{itemId}": {
+      "schema": "RecycledItem",
+      "description": "Itens, ficheiros, canais, addons e configurações excluídas armazenadas na Reciclagem do administrador"
+    },
+    "/iptv_settings/{configId}": {
+      "schema": "IptvConfig",
+      "description": "Listas e canais IPTV partilhados para toda a plataforma"
+    },
+    "/user_accounts/{accountId}": {
+      "schema": "UserAccountSubscription",
+      "description": "Registo de contas, estado ativo/inativo e pagamentos mensais dos utilizadores"
+    },
+    "/user_devices/{deviceDocId}": {
+      "schema": "UserDeviceList",
+      "description": "Dispositivos autorizados ou desativados de cada utilizador"
+    },
+    "/platform_settings/{settingId}": {
+      "schema": "MediaDomainConfig",
+      "description": "Configurações globais de domínio, identidade visual, remoção de canais e addons da plataforma"
+    },
+    "/online_presence/{sessionId}": {
+      "schema": "OnlinePresence",
+      "description": "Sessões ativas em tempo real para visualização do administrador por local e província"
+    }
+  }
+}

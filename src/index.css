@@ -1,0 +1,130 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root,
+[data-theme="default"] {
+  --theme-bg: #0c0d10;
+  --theme-surface: #161a22;
+  --theme-surface-alt: #121620;
+  --theme-border: #2d3139;
+  --theme-accent: #7b5be4;
+  --theme-accent-hover: #8e74eb;
+  --theme-text: #e2e8f0;
+  --theme-muted: #94a3b8;
+  --theme-header-bg: rgba(18, 22, 32, 0.95);
+}
+
+[data-theme="netflix"] {
+  --theme-bg: #141414;
+  --theme-surface: #181818;
+  --theme-surface-alt: #0b0b0b;
+  --theme-border: #2b2b2b;
+  --theme-accent: #e50914;
+  --theme-accent-hover: #f6121d;
+  --theme-text: #ffffff;
+  --theme-muted: #b3b3b3;
+  --theme-header-bg: rgba(20, 20, 20, 0.96);
+}
+
+[data-theme="prime"] {
+  --theme-bg: #00050d;
+  --theme-surface: #0f171e;
+  --theme-surface-alt: #19232d;
+  --theme-border: #22303e;
+  --theme-accent: #00a8e1;
+  --theme-accent-hover: #1ac0f8;
+  --theme-text: #f2f5f8;
+  --theme-muted: #8197a4;
+  --theme-header-bg: rgba(0, 5, 13, 0.95);
+}
+
+[data-theme="stremio"] {
+  --theme-bg: #0e0b1a;
+  --theme-surface: #17132b;
+  --theme-surface-alt: #110e1f;
+  --theme-border: #2b244d;
+  --theme-accent: #7b5bf5;
+  --theme-accent-hover: #9073ff;
+  --theme-text: #ede9fe;
+  --theme-muted: #a197c9;
+  --theme-header-bg: rgba(17, 14, 31, 0.94);
+}
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--theme-bg);
+    color: var(--theme-text);
+    transition: background-color 0.25s ease, color 0.25s ease;
+  }
+}
+
+/* Dynamic Theme Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--theme-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--theme-border);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--theme-accent);
+}
+
+/* Utilities for Theme Layouts */
+.sidebar-item-active {
+  background-color: var(--theme-accent);
+  color: white;
+  box-shadow: 0 0 15px rgba(123, 91, 228, 0.3);
+}
+
+.card-gradient {
+  background: linear-gradient(to top, rgba(12, 13, 16, 0.95) 0%, rgba(12, 13, 16, 0.4) 50%, transparent 100%);
+}
+
+.stremio-blur {
+  backdrop-filter: blur(12px);
+  background-color: rgba(23, 19, 43, 0.85);
+}
+
+.stremio-board-backdrop {
+  background-image:
+    radial-gradient(circle at 12% 0%, rgba(123, 91, 245, 0.18), transparent 42%),
+    radial-gradient(circle at 88% 12%, rgba(34, 179, 101, 0.08), transparent 36%);
+}
+
+.netflix-rank-number {
+  -webkit-text-stroke: 3px #595959;
+  color: #141414;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  line-height: 0.85;
+  user-select: none;
+}
+
+.group\/rank:hover .netflix-rank-number {
+  -webkit-text-stroke: 3px #e50914;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}

@@ -1,0 +1,6 @@
+{
+  "name": "SALGUEIRO STREAMING ANGOLA",
+  "description": "Plataforma de streaming avançada inspirada no Stremio, oferecendo filmes, séries e TV ao vivo com foco no mercado de Angola.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

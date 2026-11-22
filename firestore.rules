@@ -1,0 +1,93 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 180;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    match /test/{docId} {
+      allow read: if true;
+    }
+
+    match /catalog/{movieId} {
+      allow read: if true;
+      allow write: if isValidId(movieId)
+        && request.resource.data.id is string
+        && request.resource.data.title is string
+        && request.resource.data.title.size() <= 300;
+      allow delete: if isValidId(movieId);
+    }
+
+    match /deleted_content/{movieId} {
+      allow read: if true;
+      allow write: if isValidId(movieId)
+        && request.resource.data.id is string;
+      allow delete: if isValidId(movieId);
+    }
+
+    match /recycle_bin/{itemId} {
+      allow read: if true;
+      allow write: if isValidId(itemId)
+        && request.resource.data.id is string
+        && request.resource.data.type is string;
+      allow delete: if isValidId(itemId);
+    }
+
+    match /iptv_settings/{configId} {
+      allow read: if true;
+      allow write: if isValidId(configId)
+        && request.resource.data.iptvUrls is list;
+    }
+
+    match /user_accounts/{accountId} {
+      allow read: if true;
+      allow write: if isValidId(accountId)
+        && request.resource.data.email is string
+        && request.resource.data.email.size() <= 200;
+      allow delete: if isValidId(accountId);
+    }
+
+    match /user_devices/{deviceDocId} {
+      allow read: if true;
+      allow write: if isValidId(deviceDocId)
+        && request.resource.data.email is string
+        && request.resource.data.devices is list
+        && request.resource.data.devices.size() <= 20;
+      allow delete: if isValidId(deviceDocId);
+    }
+
+    match /platform_settings/{settingId} {
+      allow read: if true;
+      allow write: if isValidId(settingId) && (
+        (
+          settingId == 'media_domain'
+          && request.resource.data.customDomain is string
+          && request.resource.data.customDomain.size() >= 3
+          && request.resource.data.customDomain.size() <= 253
+          && request.resource.data.streamingEnabled is bool
+        ) || (
+          settingId == 'global_config'
+        )
+      );
+    }
+
+    match /online_presence/{sessionId} {
+      allow read: if true;
+      allow write: if isValidId(sessionId)
+        && request.resource.data.sessionId is string
+        && request.resource.data.sessionId.size() <= 180
+        && request.resource.data.province is string
+        && request.resource.data.province.size() <= 120
+        && request.resource.data.city is string
+        && request.resource.data.city.size() <= 120
+        && request.resource.data.country is string
+        && request.resource.data.country.size() <= 120
+        && request.resource.data.lastSeenMs is number;
+      allow delete: if isValidId(sessionId);
+    }
+  }
+}
